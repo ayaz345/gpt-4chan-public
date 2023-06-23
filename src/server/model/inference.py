@@ -17,10 +17,7 @@ from .constants import ModelParams, InferConfig
 
 def default(value: Any, fallback: Any) -> Any:
     # luke prefers making a function that chooses between `value` and `feedback` so i am gonna keep it
-    if value is None:
-        return fallback
-
-    return value
+    return fallback if value is None else value
 
 
 _cores_per_replica = ModelParams.cores_per_replica

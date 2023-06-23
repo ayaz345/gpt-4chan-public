@@ -25,7 +25,7 @@ def text_with_newlines(elem):
         if isinstance(e, str):
             # text += e.strip()
             text += e
-        elif e.name == 'br' or e.name == 'p':
+        elif e.name in ['br', 'p']:
             text += '\n'
     return text
  

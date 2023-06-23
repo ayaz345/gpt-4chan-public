@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
         start = time.time()
         network.state = read_ckpt(
-            network.state, f"checkpoint/", devices.shape[1], load_opt=False
+            network.state, "checkpoint/", devices.shape[1], load_opt=False
         )
         print(f"network loaded in {time.time() - start:.06}s")
 
@@ -48,5 +48,5 @@ if __name__ == "__main__":
         suffix = "_slim"
 
         for i in range(cores_per_replica):
-            write_ckpt(network.state, f"checkpoint_slim/", i)
+            write_ckpt(network.state, "checkpoint_slim/", i)
             print(f"written shard {i}")

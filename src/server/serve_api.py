@@ -119,10 +119,7 @@ def hf_generation():
     yield _generate
 
 def worker():
-    if settings.hf_model:
-        generation = hf_generation
-    else:
-        generation = jax_generation
+    generation = hf_generation if settings.hf_model else jax_generation
     with generation() as generate_fn:
         with open(settings.log_file, "a") as logf:
             while True:
@@ -149,10 +146,10 @@ def worker():
                     response_queue.put(response)
                     logger.info(f"putting response took {time.time() - start_time}")
                 except KeyboardInterrupt:
-                    logger.info(f"Got KeyboardInterrupt... quitting!")
+                    logger.info("Got KeyboardInterrupt... quitting!")
                     raise
                 except Exception:
-                    logger.exception(f"Got exception, will continue")
+                    logger.exception("Got exception, will continue")
                     if response_queue is not None:
                         response_queue.put("")
 
@@ -174,8 +171,7 @@ class CompleteRequest(pydantic.BaseModel):
 def _enqueue(request: CompleteRequest):
     response_queue = queue.Queue()
     request_queue.put((request, response_queue))
-    response = response_queue.get()
-    return response
+    return response_queue.get()
 
 
 @app.on_event("startup")

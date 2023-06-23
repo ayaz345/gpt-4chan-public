@@ -35,10 +35,10 @@ def make_record_file(record_ids, out_dir, file_no):
 
 def read_in_blocks(f):
     while True:
-        block = f.read(FLAGS.read_buffer_size)
-        if not block:
+        if block := f.read(FLAGS.read_buffer_size):
+            yield block
+        else:
             break
-        yield block
 
 def main(_):
     out_dir = Path(FLAGS.out_dir)
